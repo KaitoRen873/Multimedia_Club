@@ -2,663 +2,1461 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Block Tales · Duel in the Meadow</title>
-    <!-- Pixel font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multimedia Club</title>
     <style>
+        :root {
+            --bg: #0a0f0a;
+            --surface: rgba(20, 24, 20, 0.92);
+            --surface2: rgba(26, 36, 26, 0.92);
+            --surface3: rgba(31, 46, 31, 0.9);
+            --accent: #a4e529;
+            --accent2: #ffd700;
+            --accent3: #ffb300;
+            --accent4: #00e676;
+            --accent5: #2e7d32;
+            --gold: #ffe600;
+            --text: #e0e0e0;
+            --text-muted: #a0b8a0;
+            --border: #2a3d2a;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 30px rgba(164, 229, 41, 0.25);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background: #222034;
-            font-family: 'Press Start 2P', cursive;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            user-select: none;
-            image-rendering: pixelated;
-        }
-
-        /* Game window */
-        .game-world {
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(rgba(10, 15, 10, 0.82), rgba(10, 15, 10, 0.82)),
+                url('https://picsum.photos/1920/1080?random=2') center / cover fixed;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
             position: relative;
-            width: 100%;
-            max-width: 700px;
-            aspect-ratio: 16 / 9;
-            background: linear-gradient(180deg, #6dc5ff 0%, #a5e0ff 30%, #c0e8ff 100%);
-            border: 6px solid #4a3620;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 0 0 4px #1a1208, 0 20px 30px rgba(0,0,0,0.5);
-            margin: 0 auto;
         }
 
-        /* Sky & scenery */
-        .sky {
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(164, 229, 41, 0.05) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 60%, rgba(0, 230, 118, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 90%, rgba(46, 125, 50, 0.06) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(20, 24, 20, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            transition: var(--transition);
+        }
+
+        .nav-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface3);
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 20px rgba(164, 229, 41, 0.4);
+            animation: logoPulse 3s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        @keyframes logoPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(164, 229, 41, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 35px rgba(164, 229, 41, 0.7), 0 0 60px rgba(46, 125, 50, 0.3);
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 4px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-links a.active {
+            background: rgba(164, 229, 41, 0.2);
+            color: var(--accent2);
+        }
+
+        .nav-links a .badge {
+            background: var(--accent);
+            color: #0a0f0a;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 6px;
+            font-weight: 700;
+            animation: badgeBlink 2s ease-in-out infinite;
+        }
+
+        @keyframes badgeBlink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.6rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .hero {
+            position: relative;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg-animation {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 20% 20%, #fff9c4, transparent 35%);
             pointer-events: none;
-        }
-        .sun {
-            position: absolute;
-            top: 8%;
-            left: 15%;
-            width: 60px;
-            height: 60px;
-            background: #ffeb3b;
-            border-radius: 50%;
-            box-shadow: 0 0 40px #ffeb3b;
-            pointer-events: none;
-        }
-        .cloud {
-            position: absolute;
-            background: #fff;
-            border-radius: 40% 50% 30% 60%;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-            pointer-events: none;
-        }
-        .cloud1 {
-            width: 100px;
-            height: 40px;
-            top: 15%;
-            left: 55%;
-            animation: float 8s infinite alternate ease-in-out;
-        }
-        .cloud2 {
-            width: 80px;
-            height: 30px;
-            top: 25%;
-            left: 70%;
-            animation: float 10s infinite alternate ease-in-out;
-        }
-        @keyframes float {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-25px); }
+            z-index: 0;
         }
 
-        /* Ground & foliage */
-        .ground {
+        .hero-orb {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 30%;
-            background: linear-gradient(180deg, #5b8c2a 0%, #3c6018 30%, #2d4510 100%);
-            border-top: 4px solid #8bc34a;
-            box-shadow: inset 0 10px 15px rgba(0,0,0,0.3);
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            animation: floatOrb 8s ease-in-out infinite;
         }
-        .bush {
-            position: absolute;
-            bottom: 18%;
-            background: #2e5c1a;
-            border-radius: 50% 50% 10% 10%;
-            box-shadow: 0 8px 0 #1e3b0e, 0 0 15px rgba(0,0,0,0.4);
-            pointer-events: none;
-        }
-        .bush1 {
+        .hero-orb:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            top: -50px;
             left: 10%;
-            width: 80px;
-            height: 50px;
+            animation-delay: 0s;
         }
-        .bush2 {
-            right: 8%;
-            width: 90px;
-            height: 55px;
+        .hero-orb:nth-child(2) {
+            width: 250px;
+            height: 250px;
+            background: var(--accent2);
+            top: 50px;
+            right: 15%;
+            animation-delay: -3s;
         }
-        .tree {
-            position: absolute;
-            bottom: 20%;
-            width: 30px;
-            height: 70px;
-            background: #5d3a1a;
-            border-radius: 5px;
-            box-shadow: 0 6px 0 #3d2510;
-            pointer-events: none;
-        }
-        .tree1 { left: 5%; }
-        .tree2 { right: 5%; }
-        .tree::after {
-            content: '';
-            position: absolute;
-            top: -30px;
-            left: -15px;
-            width: 60px;
-            height: 50px;
-            background: #2e6b1f;
-            border-radius: 50%;
-            box-shadow: 0 5px 0 #1e4a12;
+        .hero-orb:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            background: var(--accent4);
+            bottom: -30px;
+            left: 50%;
+            animation-delay: -5s;
         }
 
-        /* Characters area */
-        .battle-row {
-            position: absolute;
-            bottom: 25%;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding: 0 8%;
-            pointer-events: none;
+        @keyframes floatOrb {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(40px, -30px) scale(1.15);
+            }
+            50% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+            75% {
+                transform: translate(-35px, -15px) scale(1.1);
+            }
         }
 
-        .character {
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            background: linear-gradient(135deg, #fff 0%, #e0ffe0 40%, var(--accent2) 70%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            line-height: 1.15;
+            display: inline-block;
+            position: relative;
+            padding: 0.3em 0.8em;
+            border-radius: 60px;
+            background-color: rgba(10, 15, 10, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 0 40px rgba(164, 229, 41, 0.3), inset 0 0 20px rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(164, 229, 41, 0.4);
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(135deg, #fff 0%, #e0ffe0 40%, var(--accent2) 70%, var(--accent) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        @supports not (-webkit-background-clip: text) {
+            .hero h1 {
+                background: var(--accent2);
+                -webkit-text-fill-color: #0a0f0a;
+                color: #0a0f0a;
+                text-shadow: none;
+            }
+        }
+
+        .hero .tagline {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-weight: 400;
+        }
+
+        .hero-stats {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat .num {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent2);
+        }
+        .hero-stat .lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Team Section */
+        .team-section {
+            max-width: 1300px;
+            margin: 0 auto 3rem;
+            padding: 0 2rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .team-card {
+            background: var(--surface2);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 1.8rem 1.4rem;
+            text-align: center;
+            transition: var(--transition);
             position: relative;
         }
-        .health-bar-bg {
-            width: 90px;
-            height: 14px;
-            background: #551111;
-            border: 2px solid #1a1208;
-            margin-bottom: 6px;
-            box-shadow: inset 0 2px 0 #330000;
-        }
-        .health-fill {
-            height: 100%;
-            width: 100%;
-            background: #4ae04a;
-            transition: width 0.25s ease, background 0.2s;
-        }
-        .health-fill.danger {
-            background: #ff4444;
-        }
-        .char-name {
-            font-size: 0.55rem;
-            color: #fff;
-            text-shadow: 2px 2px 0 #000;
-            margin-bottom: 4px;
-        }
-        .sprite {
-            font-size: 3.5rem;
-            filter: drop-shadow(0 8px 4px rgba(0,0,0,0.5));
-            transition: transform 0.1s ease;
-        }
-        .enemy-sprite.windup {
-            animation: enemyWiggle 0.5s infinite;
-        }
-        .enemy-sprite.attacking {
-            animation: enemyLunge 0.15s ease-out;
-        }
-        @keyframes enemyWiggle {
-            0%,100% { transform: translateX(0); }
-            50% { transform: translateX(-6px); }
-        }
-        @keyframes enemyLunge {
-            0% { transform: scale(1); }
-            60% { transform: scale(1.5) translateX(-10px); }
-            100% { transform: scale(1.1) translateX(2px); }
+        .team-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(164, 229, 41, 0.25);
         }
 
-        /* Dodge prompt area */
-        .dodge-zone {
-            position: absolute;
-            bottom: 40%;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            pointer-events: auto;
-            z-index: 10;
-        }
-        .dodge-button {
+        .team-card .avatar {
             width: 90px;
             height: 90px;
             border-radius: 50%;
-            background: #3e2b17;
-            border: 6px solid #6b4d29;
+            margin: 0 auto 1rem;
+            overflow: hidden;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 20px rgba(164, 229, 41, 0.3);
+            background: var(--surface3);
+        }
+        .team-card .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent2);
+            margin-bottom: 0.25rem;
+        }
+        .team-card .role {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+        .team-card .bio {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Members sublist */
+        .members-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--surface2);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+        .member-item {
+            text-align: center;
+            width: 80px;
+        }
+        .member-item .small-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            margin: 0 auto 0.4rem;
+            overflow: hidden;
+            border: 2px solid var(--accent4);
+            background: var(--surface3);
+        }
+        .member-item .small-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .member-item .name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .main-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.5px;
+        }
+        .section-title .icon-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: dotPulse 1.5s ease-in-out infinite;
+        }
+        .icon-dot.news {
+            background: var(--accent2);
+        }
+        .icon-dot.events {
+            background: var(--accent4);
+        }
+        .icon-dot.announce {
+            background: var(--accent3);
+        }
+        .icon-dot.team-dot {
+            background: var(--gold);
+        }
+
+        @keyframes dotPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 6px currentColor;
+            }
+            50% {
+                box-shadow: 0 0 20px currentColor, 0 0 35px currentColor;
+            }
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .news-card {
+            background: var(--surface2);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+        .news-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-glow);
+            border-color: rgba(164, 229, 41, 0.4);
+        }
+        .news-card-img {
+            height: 200px;
+            background: var(--surface3);
+            position: relative;
+            overflow: hidden;
+        }
+        .news-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .news-card:hover .news-card-img img {
+            transform: scale(1.08);
+        }
+        .news-card-img .category-tag {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: var(--accent);
+            color: #0a0f0a;
+            font-size: 0.75rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+        .news-card-img .video-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
-            cursor: pointer;
-            box-shadow: 0 0 0 4px #1a1208, 0 8px 20px rgba(0,0,0,0.7);
-            transition: 0.1s linear;
-            color: #eed;
+            font-size: 1.2rem;
+            z-index: 2;
+            transition: var(--transition);
+            border: 2px solid rgba(255, 255, 255, 0.5);
         }
-        .dodge-button:active {
-            transform: scale(0.9);
+        .news-card:hover .video-indicator {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 25px rgba(164, 229, 41, 0.6);
         }
-        .dodge-button.waiting {
-            border-color: #d44;
-            box-shadow: 0 0 30px #d44;
+        .news-card-body {
+            padding: 1.2rem 1.4rem;
         }
-        .dodge-button.ready {
-            border-color: #ff0;
-            background: #3a5a2a;
-            box-shadow: 0 0 45px #ff0;
-            animation: pulseBtn 0.3s;
+        .news-card-body .date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
         }
-        @keyframes pulseBtn {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .news-card-body h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
-
-        /* UI text */
-        .game-message {
-            position: absolute;
-            top: 12%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.6rem;
-            color: #fff;
-            text-shadow: 2px 2px 0 #000;
-            text-align: center;
-            background: rgba(0,0,0,0.5);
-            padding: 5px 10px;
-            border-radius: 5px;
-            pointer-events: none;
+        .news-card-body p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-
-        .control-panel {
-            position: absolute;
-            bottom: 5%;
-            left: 50%;
-            transform: translateX(-50%);
+        .news-card-footer {
             display: flex;
-            gap: 10px;
-            z-index: 20;
+            align-items: center;
+            gap: 8px;
+            padding: 0 1.4rem 1.2rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
-        .option-btn, .action-btn {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.5rem;
-            padding: 6px 12px;
-            background: #4a2a10;
-            border: 3px solid #6b4d29;
-            color: #eed;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #2b1a0b;
-            transition: 0.1s;
-        }
-        .option-btn.active {
-            background: #f7d44a;
-            border-color: #fff;
-            color: #1e1308;
-        }
-        .action-btn {
-            background: #d44;
-            border-bottom: 4px solid #822;
-            color: white;
-        }
-
-        .stats {
-            position: absolute;
-            top: 2%;
-            right: 3%;
-            font-size: 0.45rem;
+        .news-card-footer .author-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.7rem;
             color: #fff;
-            text-shadow: 1px 1px 0 #000;
-            text-align: right;
-            pointer-events: none;
         }
 
-        /* Responsive scaling */
-        @media (max-width: 500px) {
-            .game-world {
-                aspect-ratio: 4 / 3;
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: var(--surface2);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 1.4rem;
+            transition: var(--transition);
+        }
+        .sidebar-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow);
+        }
+        .sidebar-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .event-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .event-item:last-child {
+            border-bottom: none;
+        }
+        .event-item:hover {
+            padding-left: 8px;
+        }
+        .event-item .event-date-badge {
+            display: inline-block;
+            background: var(--accent4);
+            color: #000;
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        .event-item h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        .event-item .event-meta {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+        .event-item.past {
+            opacity: 0.55;
+        }
+        .event-item.past .event-date-badge {
+            background: #555;
+            color: #ccc;
+        }
+
+        .announce-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--accent3);
+            background: rgba(255, 179, 0, 0.06);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .announce-item.urgent {
+            border-left-color: var(--accent);
+            background: rgba(164, 229, 41, 0.08);
+            animation: urgentGlow 2s ease-in-out infinite;
+        }
+        @keyframes urgentGlow {
+            0%,
+            100% {
+                box-shadow: inset 0 0 0px transparent;
             }
-            .sprite {
-                font-size: 2.8rem;
+            50% {
+                box-shadow: inset 0 0 20px rgba(164, 229, 41, 0.2);
             }
-            .dodge-button {
-                width: 70px;
-                height: 70px;
-                font-size: 2rem;
+        }
+        .announce-item .announce-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent3);
+        }
+        .announce-item.urgent .announce-badge {
+            color: var(--accent);
+        }
+        .announce-item p {
+            font-size: 0.88rem;
+            margin-top: 2px;
+        }
+
+        .events-full {
+            margin-top: 2rem;
+        }
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.2rem;
+        }
+        .event-card {
+            background: var(--surface2);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 1.4rem;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: rgba(0, 230, 118, 0.4);
+        }
+        .event-card .event-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        .event-card h3 {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .event-card .event-detail {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .event-card .countdown {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent4);
+            background: rgba(0, 230, 118, 0.1);
+            padding: 4px 12px;
+            border-radius: 15px;
+        }
+
+        .gallery-strip {
+            max-width: 1300px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .gallery-scroll {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .gallery-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+        .gallery-scroll::-webkit-scrollbar-track {
+            background: var(--surface);
+            border-radius: 10px;
+        }
+        .gallery-scroll::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+        .gallery-item {
+            min-width: 220px;
+            height: 150px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        .gallery-item:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-glow);
+            transform: scale(1.03);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .gallery-item .overlay-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal {
+            background: var(--surface2);
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .footer .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .footer .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--surface3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+        .footer .social-links a:hover {
+            background: var(--accent);
+            box-shadow: 0 0 20px rgba(164, 229, 41, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: rgba(20, 24, 20, 0.98);
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+                gap: 2px;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+                padding: 0.2em 0.6em;
+            }
+            .hero-stats {
+                gap: 1.5rem;
+            }
+            .hero-stat .num {
+                font-size: 1.8rem;
+            }
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-item {
+                min-width: 150px;
+                height: 120px;
+            }
+            .main-container {
+                padding: 0 1rem 3rem;
+            }
+            .navbar {
+                padding: 0 1rem;
+            }
+            .team-section {
+                padding: 0 1rem;
             }
         }
     </style>
 </head>
 <body>
-<div class="game-world">
-    <!-- Scenery layers (non-interactive) -->
-    <div class="sky"></div>
-    <div class="sun"></div>
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
-    <div class="ground"></div>
-    <div class="bush bush1"></div>
-    <div class="bush bush2"></div>
-    <div class="tree tree1"></div>
-    <div class="tree tree2"></div>
 
-    <!-- Game message -->
-    <div class="game-message" id="gameMessage">⚔️ Duel in the Meadow ⚔️</div>
-
-    <!-- Stats (attacks survived) -->
-    <div class="stats" id="statsDisplay">Attacks: 0</div>
-
-    <!-- Battle row: enemy (left) and player (right) -->
-    <div class="battle-row">
-        <div class="character" id="enemyChar">
-            <div class="char-name" id="enemyName">BANDIT</div>
-            <div class="health-bar-bg">
-                <div class="health-fill" id="enemyHpFill" style="width:100%"></div>
-            </div>
-            <span class="sprite enemy-sprite" id="enemySprite">🦝</span>
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <img src="https://picsum.photos/seed/schoollogo/100/100" alt="School Logo" loading="lazy">
+                </div>
+                <span>Multimedia Club</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#news" class="active">📰 News</a></li>
+                <li><a href="#events">📅 Events</a></li>
+                <li><a href="#announcements">📢 Announcements <span class="badge">3</span></a></li>
+                <li><a href="#gallery">🖼️ Gallery</a></li>
+                <li><a href="#team">👥 Team</a></li>
+                <li><a href="#about">ℹ️ About</a></li>
+            </ul>
         </div>
-        <div class="character" id="playerChar">
-            <div class="char-name">HERO</div>
-            <div class="health-bar-bg">
-                <div class="health-fill" id="playerHpFill" style="width:100%"></div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg-animation">
+            <div class="hero-orb"></div>
+            <div class="hero-orb"></div>
+            <div class="hero-orb"></div>
+        </div>
+        <div class="hero-content">
+            <h1>Multimedia Club</h1>
+            <p class="tagline">Where creativity meets technology. Capturing stories, producing content, and building the future of digital media — one frame at a time.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="num" id="memberCount">127</div>
+                    <div class="lbl">Active Members</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">48</div>
+                    <div class="lbl">Projects This Year</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">12</div>
+                    <div class="lbl">Upcoming Events</div>
+                </div>
             </div>
-            <span class="sprite" id="playerSprite">🛡️</span>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="team-section">
+        <div class="section-title">
+            <span class="icon-dot team-dot"></span> Our Team
+        </div>
+        <div class="team-grid">
+            <!-- Club Advisor -->
+            <div class="team-card">
+                <div class="avatar">
+                    <img src="https://picsum.photos/seed/advisor/200/200" alt="Advisor" loading="lazy">
+                </div>
+                <h3>Mr. David Thompson</h3>
+                <div class="role">🎓 Club Advisor</div>
+                <p class="bio">Media Studies teacher with 15 years of experience in filmmaking and digital media. Guides the club's creative direction and oversees all major projects.</p>
+            </div>
+            <!-- President -->
+            <div class="team-card">
+                <div class="avatar">
+                    <img src="https://picsum.photos/seed/president/200/200" alt="President" loading="lazy">
+                </div>
+                <h3>Sarah Chen</h3>
+                <div class="role">🏆 President</div>
+                <p class="bio">Senior passionate about video production and editing. Leads club meetings and coordinates with school administration.</p>
+            </div>
+            <!-- Vice President -->
+            <div class="team-card">
+                <div class="avatar">
+                    <img src="https://picsum.photos/seed/vicepres/200/200" alt="Vice President" loading="lazy">
+                </div>
+                <h3>Marcus Rivera</h3>
+                <div class="role">🎥 Vice President</div>
+                <p class="bio">Junior focusing on cinematography and podcast production. Manages equipment and assists the president in event planning.</p>
+            </div>
+            <!-- Secretary -->
+            <div class="team-card">
+                <div class="avatar">
+                    <img src="https://picsum.photos/seed/secretary/200/200" alt="Secretary" loading="lazy">
+                </div>
+                <h3>Jordan Lee</h3>
+                <div class="role">📋 Secretary</div>
+                <p class="bio">Organizes club records, meeting notes, and manages the club's social media presence. Also an aspiring graphic designer.</p>
+            </div>
+            <!-- Treasurer -->
+            <div class="team-card">
+                <div class="avatar">
+                    <img src="https://picsum.photos/seed/treasurer/200/200" alt="Treasurer" loading="lazy">
+                </div>
+                <h3>Amy Patel</h3>
+                <div class="role">💰 Treasurer</div>
+                <p class="bio">Handles club funds, fundraising events, and budget planning for equipment and trips. Sophomore with a knack for organization.</p>
+            </div>
+        </div>
+
+        <!-- Members List -->
+        <div class="members-list">
+            <div class="member-item">
+                <div class="small-avatar">
+                    <img src="https://picsum.photos/seed/member1/100/100" alt="Member" loading="lazy">
+                </div>
+                <span class="name">Alex Kim</span>
+            </div>
+            <div class="member-item">
+                <div class="small-avatar">
+                    <img src="https://picsum.photos/seed/member2/100/100" alt="Member" loading="lazy">
+                </div>
+                <span class="name">Taylor Smith</span>
+            </div>
+            <div class="member-item">
+                <div class="small-avatar">
+                    <img src="https://picsum.photos/seed/member3/100/100" alt="Member" loading="lazy">
+                </div>
+                <span class="name">Jamie Doe</span>
+            </div>
+            <div class="member-item">
+                <div class="small-avatar">
+                    <img src="https://picsum.photos/seed/member4/100/100" alt="Member" loading="lazy">
+                </div>
+                <span class="name">Casey Lee</span>
+            </div>
+            <div class="member-item">
+                <div class="small-avatar">
+                    <img src="https://picsum.photos/seed/member5/100/100" alt="Member" loading="lazy">
+                </div>
+                <span class="name">Riley Davis</span>
+            </div>
+            <div class="member-item">
+                <div class="small-avatar">
+                    <img src="https://picsum.photos/seed/member6/100/100" alt="Member" loading="lazy">
+                </div>
+                <span class="name">Morgan Brown</span>
+            </div>
+            <div class="member-item">
+                <div class="small-avatar">
+                    <img src="https://picsum.photos/seed/member7/100/100" alt="Member" loading="lazy">
+                </div>
+                <span class="name">Jordan Wilson</span>
+            </div>
+            <div class="member-item">
+                <div class="small-avatar">
+                    <img src="https://picsum.photos/seed/member8/100/100" alt="Member" loading="lazy">
+                </div>
+                <span class="name">Sam Taylor</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="main-container">
+        <div class="content-area">
+            <section id="news">
+                <div class="section-title">
+                    <span class="icon-dot news"></span> Latest News Articles
+                </div>
+                <div class="news-grid" id="newsGrid"></div>
+            </section>
+
+            <section id="events" class="events-full">
+                <div class="section-title">
+                    <span class="icon-dot events"></span> School Events
+                </div>
+                <div class="events-grid" id="eventsGrid"></div>
+            </section>
+        </div>
+
+        <aside class="sidebar" id="announcements">
+            <div class="sidebar-card">
+                <h3>📅 Upcoming Events</h3>
+                <div id="sidebarEvents"></div>
+            </div>
+            <div class="sidebar-card">
+                <h3>📢 Announcements</h3>
+                <div id="announcementsList"></div>
+            </div>
+            <div class="sidebar-card">
+                <h3>🔗 Quick Links</h3>
+                <p style="font-size:0.85rem;color:var(--text-muted);">
+                    🎥 <strong>YouTube Channel</strong> — Watch our latest productions<br><br>
+                    📸 <strong>Instagram</strong> — Behind the scenes<br><br>
+                    🎙️ <strong>Podcast</strong> — Weekly club podcast<br><br>
+                    💬 <strong>Discord Server</strong> — Join the community
+                </p>
+            </div>
+        </aside>
+    </div>
+
+    <section id="gallery" class="gallery-strip">
+        <div class="section-title">
+            <span class="icon-dot" style="background: var(--gold);"></span> Multimedia Gallery
+        </div>
+        <div class="gallery-scroll" id="galleryScroll"></div>
+    </section>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent">
+            <button class="modal-close" id="modalClose">✕</button>
+            <div id="modalBody"></div>
         </div>
     </div>
 
-    <!-- Dodge button (central) -->
-    <div class="dodge-zone">
-        <div class="dodge-button" id="dodgeBtn">🛡️</div>
-    </div>
+    <footer class="footer" id="about">
+        <div class="social-links">
+            <a href="#" title="YouTube">▶</a>
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="Discord">💬</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="TikTok">🎵</a>
+        </div>
+        <p>© 2026 Multimedia Club — School of Creative Arts & Technology</p>
+        <p style="margin-top:4px;">Meetings every Tuesday & Thursday • Room B-204 • 3:30 PM – 5:00 PM</p>
+    </footer>
 
-    <!-- Controls at bottom -->
-    <div class="control-panel">
-        <button class="option-btn active" id="optFast">⚡ FAST</button>
-        <button class="option-btn" id="optSlow">🐌 SLOW</button>
-        <button class="action-btn" id="restartBtn">🔄 RESTART</button>
-    </div>
-</div>
+    <script>
+        const newsArticles = [{
+            id: 1,
+            category: 'Video Production',
+            title: 'Club Wins First Place at State Film Festival',
+            excerpt: 'Our short film "Digital Horizons" took home the top prize at the annual state-wide competition, beating 200+ entries.',
+            date: 'June 10, 2026',
+            author: 'Sarah Chen',
+            authorInitial: 'S',
+            image: 'https://picsum.photos/seed/filmfest/600/400',
+            isVideo: true,
+            fullContent: '<h2>🏆 State Film Festival Victory!</h2><p>Our multimedia club\'s short film <strong>"Digital Horizons"</strong> has won first place at the prestigious State Film Festival! The 8-minute film, exploring the intersection of AI and human creativity, was praised by judges for its innovative cinematography and powerful storytelling.</p><p>The team of 12 club members worked tirelessly for 3 months on this project. Special thanks to our faculty advisor Mr. Thompson for his guidance.</p><p>🎬 Watch the full film on our YouTube channel!</p>'
+        }, {
+            id: 2,
+            category: 'Photography',
+            title: 'New Photography Workshop Series Announced',
+            excerpt: 'Learn portrait, landscape, and macro photography in our 6-week workshop series starting this July.',
+            date: 'June 8, 2026',
+            author: 'Marcus Rivera',
+            authorInitial: 'M',
+            image: 'https://picsum.photos/seed/photowork/600/400',
+            isVideo: false,
+            fullContent: '<h2>📸 Photography Workshop Series</h2><p>We\'re excited to announce a comprehensive 6-week photography workshop covering:</p><ul><li>Week 1-2: Portrait Photography & Lighting</li><li>Week 3-4: Landscape & Nature Photography</li><li>Week 5: Macro Photography Techniques</li><li>Week 6: Editing & Post-Processing</li></ul><p>All skill levels welcome! Cameras will be provided for those who need them.</p>'
+        }, {
+            id: 3,
+            category: 'Podcast',
+            title: 'New Episode: Interview with Local Filmmaker',
+            excerpt: 'Our podcast team sat down with award-winning director Lisa Park to discuss indie filmmaking.',
+            date: 'June 5, 2026',
+            author: 'Jordan Lee',
+            authorInitial: 'J',
+            image: 'https://picsum.photos/seed/podcast/600/400',
+            isVideo: false,
+            fullContent: '<h2>🎙️ Podcast Episode #47</h2><p>In this inspiring episode, we interview <strong>Lisa Park</strong>, an independent filmmaker who recently premiered her documentary at Sundance. She shares invaluable advice for aspiring student filmmakers.</p><p>Available on Spotify, Apple Podcasts, and our website.</p>'
+        }, {
+            id: 4,
+            category: 'Video Production',
+            title: 'Behind the Scenes: Spring Concert Coverage',
+            excerpt: 'Check out how our crew captured the school\'s spring concert with a multi-camera setup.',
+            date: 'June 1, 2026',
+            author: 'Sarah Chen',
+            authorInitial: 'S',
+            image: 'https://picsum.photos/seed/concert/600/400',
+            isVideo: true,
+            fullContent: '<h2>🎤 Spring Concert BTS</h2><p>Our team deployed a 6-camera setup to capture the school\'s annual spring concert. This behind-the-scenes look shows the coordination required for live event coverage.</p><p>The full concert video is now available on our channel!</p>'
+        }, {
+            id: 5,
+            category: 'Announcement',
+            title: 'Club Recruitment Drive — New Members Welcome!',
+            excerpt: 'Interested in video, photo, audio, or design? Come to our open house on June 20th!',
+            date: 'May 28, 2026',
+            author: 'Club Executive Board',
+            authorInitial: 'C',
+            image: 'https://picsum.photos/seed/recruit/600/400',
+            isVideo: false,
+            fullContent: '<h2>🎉 Recruitment Open House</h2><p>Join the Multimedia Club! We\'re looking for passionate students interested in:</p><ul><li>Video Production & Editing</li><li>Photography</li><li>Podcasting & Audio Engineering</li><li>Graphic Design & Animation</li><li>Social Media Management</li></ul><p><strong>Date:</strong> June 20, 2026 | <strong>Time:</strong> 3:30 PM | <strong>Location:</strong> Room B-204</p>'
+        }, {
+            id: 6,
+            category: 'Technology',
+            title: 'New Equipment Grant: 4K Cameras & Lighting Kit',
+            excerpt: 'The club has received a $15,000 grant for new multimedia equipment. Here\'s what we\'re getting.',
+            date: 'May 22, 2026',
+            author: 'Marcus Rivera',
+            authorInitial: 'M',
+            image: 'https://picsum.photos/seed/equipment/600/400',
+            isVideo: false,
+            fullContent: '<h2>💰 Equipment Grant Approved!</h2><p>We\'re thrilled to announce that the school board has approved a <strong>$15,000 grant</strong> for new club equipment including:</p><ul><li>3 × Sony 4K Mirrorless Cameras</li><li>Professional LED Lighting Kit</li><li>Rode Wireless Microphone System</li><li>DJI Ronin Gimbal Stabilizer</li><li>New iMac for the editing suite</li></ul><p>Equipment arrives in July — get excited!</p>'
+        }];
 
-<script>
-    (function() {
-        // --- DOM refs ---
-        const dodgeBtn = document.getElementById('dodgeBtn');
-        const enemySprite = document.getElementById('enemySprite');
-        const enemyName = document.getElementById('enemyName');
-        const enemyHpFill = document.getElementById('enemyHpFill');
-        const playerHpFill = document.getElementById('playerHpFill');
-        const gameMessage = document.getElementById('gameMessage');
-        const statsDisplay = document.getElementById('statsDisplay');
-        const optFast = document.getElementById('optFast');
-        const optSlow = document.getElementById('optSlow');
-        const restartBtn = document.getElementById('restartBtn');
+        const eventsData = [{
+            id: 1,
+            title: 'Summer Film Screening Night',
+            date: 'June 25, 2026',
+            time: '6:00 PM – 9:00 PM',
+            location: 'School Auditorium',
+            icon: '🎬',
+            description: 'Watch student-produced films on the big screen! Popcorn and drinks provided.',
+            isPast: false,
+            countdownDays: 10
+        }, {
+            id: 2,
+            title: 'Photography Walk & Workshop',
+            date: 'July 2, 2026',
+            time: '10:00 AM – 1:00 PM',
+            location: 'City Botanical Gardens',
+            icon: '📸',
+            description: 'Hands-on nature photography session led by professional photographer Ms. Davies.',
+            isPast: false,
+            countdownDays: 17
+        }, {
+            id: 3,
+            title: 'Podcast Recording Live Session',
+            date: 'July 8, 2026',
+            time: '3:30 PM – 5:30 PM',
+            location: 'Studio B-204',
+            icon: '🎙️',
+            description: 'Be part of a live podcast recording! Topic: "The Future of Digital Media."',
+            isPast: false,
+            countdownDays: 23
+        }, {
+            id: 4,
+            title: 'Video Editing Masterclass',
+            date: 'June 15, 2026',
+            time: '3:30 PM – 5:00 PM',
+            location: 'Computer Lab 3',
+            icon: '💻',
+            description: 'Learn advanced Premiere Pro techniques from our senior editors.',
+            isPast: true,
+            countdownDays: 0
+        }, {
+            id: 5,
+            title: 'Animation & Motion Graphics Intro',
+            date: 'July 15, 2026',
+            time: '3:30 PM – 5:30 PM',
+            location: 'Design Studio',
+            icon: '✨',
+            description: 'Introductory workshop on After Effects and motion design principles.',
+            isPast: false,
+            countdownDays: 30
+        }, {
+            id: 6,
+            title: 'End-of-Summer Showcase',
+            date: 'August 20, 2026',
+            time: '5:00 PM – 8:00 PM',
+            location: 'School Gallery Hall',
+            icon: '🏆',
+            description: 'The grand showcase of all club projects from the summer term. Family and friends welcome!',
+            isPast: false,
+            countdownDays: 66
+        }];
 
-        // --- Audio (simple beeps) ---
-        let audioCtx = null;
-        function initAudio() {
-            if (audioCtx) return;
-            try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            } catch(e) {}
+        const announcementsData = [{
+            id: 1,
+            text: '🎬 Film Festival submissions due by June 18th! Submit your entries to the club Google Drive.',
+            urgent: true,
+            badge: 'URGENT'
+        }, {
+            id: 2,
+            text: '📋 Club officer elections will be held on June 28th. Nominations are now open.',
+            urgent: false,
+            badge: 'NOTICE'
+        }, {
+            id: 3,
+            text: '🖥️ The editing lab will be closed for maintenance on June 16-17. Plan accordingly.',
+            urgent: true,
+            badge: 'URGENT'
+        }, {
+            id: 4,
+            text: '🎓 Congratulations to our graduating seniors! Farewell party on June 22nd.',
+            urgent: false,
+            badge: 'CELEBRATION'
+        }];
+
+        const galleryItems = [
+            { src: 'https://picsum.photos/seed/gallery1/400/300', label: 'Film Set BTS' },
+            { src: 'https://picsum.photos/seed/gallery2/400/300', label: 'Podcast Recording' },
+            { src: 'https://picsum.photos/seed/gallery3/400/300', label: 'Photo Walk' },
+            { src: 'https://picsum.photos/seed/gallery4/400/300', label: 'Editing Suite' },
+            { src: 'https://picsum.photos/seed/gallery5/400/300', label: 'Club Meeting' },
+            { src: 'https://picsum.photos/seed/gallery6/400/300', label: 'Award Ceremony' },
+            { src: 'https://picsum.photos/seed/gallery7/400/300', label: 'Workshop Day' },
+            { src: 'https://picsum.photos/seed/gallery8/400/300', label: 'Concert Coverage' },
+        ];
+
+        function renderNews() {
+            const grid = document.getElementById('newsGrid');
+            grid.innerHTML = newsArticles.map(article => `
+                <div class="news-card" onclick="openNewsModal(${article.id})">
+                    <div class="news-card-img">
+                        <img src="${article.image}" alt="${article.title}" loading="lazy">
+                        <span class="category-tag">${article.category}</span>
+                        ${article.isVideo ? '<div class="video-indicator">▶</div>' : ''}
+                    </div>
+                    <div class="news-card-body">
+                        <div class="date">📅 ${article.date}</div>
+                        <h3>${article.title}</h3>
+                        <p>${article.excerpt}</p>
+                    </div>
+                    <div class="news-card-footer">
+                        <div class="author-avatar">${article.authorInitial}</div>
+                        <span>${article.author}</span>
+                    </div>
+                </div>
+            `).join('');
         }
-        function playBeep(freq, dur, type='square', vol=0.08) {
-            if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + dur);
+
+        function renderEvents() {
+            const grid = document.getElementById('eventsGrid');
+            grid.innerHTML = eventsData.map(event => `
+                <div class="event-card ${event.isPast ? 'past' : ''}" onclick="openEventModal(${event.id})">
+                    <div class="event-icon">${event.icon}</div>
+                    <h3>${event.title}</h3>
+                    <div class="event-detail">📅 ${event.date}</div>
+                    <div class="event-detail">⏰ ${event.time}</div>
+                    <div class="event-detail">📍 ${event.location}</div>
+                    ${!event.isPast ? `<div class="countdown">⏳ ${event.countdownDays} days away</div>` : '<div class="countdown" style="color:#888;background:rgba(150,150,150,0.1);">✅ Completed</div>'}
+                </div>
+            `).join('');
+
+            const sidebarEvents = document.getElementById('sidebarEvents');
+            const upcoming = eventsData.filter(e => !e.isPast).slice(0, 4);
+            sidebarEvents.innerHTML = upcoming.map(event => `
+                <div class="event-item" onclick="openEventModal(${event.id})">
+                    <span class="event-date-badge">${event.date}</span>
+                    <h4>${event.icon} ${event.title}</h4>
+                    <div class="event-meta">${event.time} • ${event.location}</div>
+                </div>
+            `).join('');
         }
 
-        // --- Game state ---
-        const MAX_HP = 100;
-        let playerHp = MAX_HP;
-        let enemyHp = MAX_HP;
-        let maxWindup = 5000;       // ms
-        const MIN_WINDUP = 1000;
-        let phase = 'idle';         // idle, waiting, ready, flinch, result, gameover, victory
-        let windupTimer = null;
-        let signalTime = null;
-        let attackCount = 0;
-        const enemyType = { name: 'BANDIT', sprite: '🦝' };
-
-        // --- Helper functions ---
-        function updateHpBars() {
-            let pPercent = (playerHp / MAX_HP) * 100;
-            playerHpFill.style.width = pPercent + '%';
-            playerHpFill.classList.toggle('danger', pPercent < 25);
-
-            let ePercent = (enemyHp / MAX_HP) * 100;
-            enemyHpFill.style.width = ePercent + '%';
-            enemyHpFill.classList.toggle('danger', ePercent < 25);
+        function renderAnnouncements() {
+            const list = document.getElementById('announcementsList');
+            list.innerHTML = announcementsData.map(a => `
+                <div class="announce-item ${a.urgent ? 'urgent' : ''}">
+                    <span class="announce-badge">🔔 ${a.badge}</span>
+                    <p>${a.text}</p>
+                </div>
+            `).join('');
         }
 
-        function setMessage(text) {
-            gameMessage.textContent = text;
+        function renderGallery() {
+            const scroll = document.getElementById('galleryScroll');
+            scroll.innerHTML = galleryItems.map(item => `
+                <div class="gallery-item">
+                    <img src="${item.src}" alt="${item.label}" loading="lazy">
+                    <div class="overlay-text">${item.label}</div>
+                </div>
+            `).join('');
         }
 
-        function clearWindup() {
-            if (windupTimer) {
-                clearTimeout(windupTimer);
-                windupTimer = null;
-            }
+        function openNewsModal(id) {
+            const article = newsArticles.find(a => a.id === id);
+            if (!article) return;
+            document.getElementById('modalBody').innerHTML = article.fullContent;
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        function gameOver() {
-            clearWindup();
-            phase = 'gameover';
-            dodgeBtn.className = 'dodge-button';
-            dodgeBtn.textContent = '💀';
-            enemySprite.classList.remove('windup', 'attacking');
-            setMessage('DEFEATED... Press RESTART');
-            playBeep(150, 0.4, 'sawtooth', 0.1);
-            playBeep(100, 0.6, 'triangle', 0.08);
+        function openEventModal(id) {
+            const event = eventsData.find(e => e.id === id);
+            if (!event) return;
+            document.getElementById('modalBody').innerHTML = `
+                <h2>${event.icon} ${event.title}</h2>
+                <p><strong>Date:</strong> ${event.date}</p>
+                <p><strong>Time:</strong> ${event.time}</p>
+                <p><strong>Location:</strong> ${event.location}</p>
+                <p>${event.description}</p>
+                ${event.isPast ? '<p style="color:#888;">✅ This event has already taken place.</p>' : `<p style="color:var(--accent4);">⏳ ${event.countdownDays} days until this event!</p>`}
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        function victory() {
-            clearWindup();
-            phase = 'victory';
-            dodgeBtn.className = 'dodge-button';
-            dodgeBtn.textContent = '🏆';
-            enemySprite.classList.remove('windup', 'attacking');
-            setMessage('VICTORY! You win!');
-            playBeep(523, 0.15);
-            setTimeout(() => playBeep(659, 0.15), 150);
-            setTimeout(() => playBeep(784, 0.2), 300);
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
         }
 
-        function startWindup() {
-            if (phase === 'gameover' || phase === 'victory') return;
-            clearWindup();
-            phase = 'waiting';
-            dodgeBtn.className = 'dodge-button waiting';
-            dodgeBtn.textContent = '⏳';
-            enemySprite.classList.add('windup');
-            enemySprite.classList.remove('attacking');
-            setMessage('Bandit is winding up...');
-            const delay = MIN_WINDUP + Math.random() * (maxWindup - MIN_WINDUP);
-            windupTimer = setTimeout(() => {
-                showExclamation();
-            }, delay);
-        }
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
 
-        function showExclamation() {
-            if (phase !== 'waiting') return;
-            phase = 'ready';
-            signalTime = performance.now();
-            dodgeBtn.className = 'dodge-button ready';
-            dodgeBtn.textContent = '❗';
-            enemySprite.classList.remove('windup');
-            enemySprite.classList.add('attacking');
-            setMessage('DODGE NOW!');
-            playBeep(800, 0.08, 'square', 0.07);
-        }
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            mobileMenuBtn.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
+        });
 
-        function handleDodge() {
-            initAudio();
-            switch (phase) {
-                case 'idle':
-                    // Start duel if not yet begun
-                    startWindup();
-                    break;
-                case 'waiting':
-                    flinch();
-                    break;
-                case 'ready':
-                    if (signalTime) {
-                        let reactionMs = Math.round(performance.now() - signalTime);
-                        resolveDodge(reactionMs);
-                    }
-                    break;
-                case 'flinch':
-                case 'result':
-                    // automatically proceed to next attack after a short delay if alive
-                    // do nothing, the auto-loop will handle it
-                    break;
-                case 'gameover':
-                case 'victory':
-                    restartGame();
-                    break;
-            }
-        }
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+                mobileMenuBtn.textContent = '☰';
+                navLinks.querySelectorAll('a').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
 
-        function flinch() {
-            clearWindup();
-            phase = 'flinch';
-            dodgeBtn.className = 'dodge-button';
-            dodgeBtn.textContent = '😵';
-            enemySprite.classList.remove('windup', 'attacking');
-            setMessage('Too early! You flinch (-10 HP)');
-            playerHp = Math.max(0, playerHp - 10);
-            updateHpBars();
-            attackCount++;
-            statsDisplay.textContent = 'Attacks: ' + attackCount;
-            playBeep(200, 0.2, 'triangle', 0.1);
-            if (playerHp <= 0) {
-                gameOver();
-                return;
-            }
-            // Auto-advance after 1.5s
-            setTimeout(() => {
-                if (phase === 'flinch' && playerHp > 0) {
-                    phase = 'idle';
-                    startWindup();
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        function animateCounter() {
+            const counter = document.getElementById('memberCount');
+            const target = 127;
+            const duration = 2000;
+            const start = performance.now();
+
+            function update(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                counter.textContent = Math.floor(target * eased);
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    counter.textContent = target;
                 }
-            }, 1500);
+            }
+            requestAnimationFrame(update);
         }
 
-        function resolveDodge(reactionMs) {
-            let outcome, dmgToEnemy, dmgToPlayer, msg, icon;
-            // Tiers based on reaction time
-            if (reactionMs <= 200) {
-                outcome = 'perfect';
-                dmgToEnemy = 30;
-                dmgToPlayer = 0;
-                msg = `PERFECT! ${reactionMs}ms -30 ENEMY HP`;
-                icon = '✨';
-                playBeep(1000, 0.1, 'square', 0.09);
-            } else if (reactionMs <= 300) {
-                outcome = 'great';
-                dmgToEnemy = 20;
-                dmgToPlayer = 0;
-                msg = `GREAT! ${reactionMs}ms -20 ENEMY HP`;
-                icon = '🔥';
-                playBeep(800, 0.1, 'square', 0.07);
-            } else if (reactionMs <= 400) {
-                outcome = 'good';
-                dmgToEnemy = 10;
-                dmgToPlayer = 0;
-                msg = `GOOD! ${reactionMs}ms -10 ENEMY HP`;
-                icon = '👍';
-                playBeep(600, 0.1, 'square', 0.07);
-            } else {
-                outcome = 'miss';
-                dmgToEnemy = 0;
-                dmgToPlayer = 15;
-                msg = `MISS! ${reactionMs}ms -15 YOUR HP`;
-                icon = '💥';
-                playBeep(250, 0.25, 'sawtooth', 0.1);
-            }
+        function init() {
+            renderNews();
+            renderEvents();
+            renderAnnouncements();
+            renderGallery();
+            animateCounter();
 
-            phase = 'result';
-            dodgeBtn.className = 'dodge-button';
-            dodgeBtn.textContent = icon;
-            enemySprite.classList.remove('windup', 'attacking');
-
-            // Apply damage
-            enemyHp = Math.max(0, enemyHp - dmgToEnemy);
-            playerHp = Math.max(0, playerHp - dmgToPlayer);
-            updateHpBars();
-            attackCount++;
-            statsDisplay.textContent = 'Attacks: ' + attackCount;
-            setMessage(msg);
-
-            // Check win/lose
-            if (enemyHp <= 0) {
-                victory();
-                return;
-            }
-            if (playerHp <= 0) {
-                gameOver();
-                return;
-            }
-
-            // Auto next attack after delay
-            setTimeout(() => {
-                if (phase === 'result' && playerHp > 0 && enemyHp > 0) {
-                    phase = 'idle';
-                    startWindup();
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    navbar.style.boxShadow = '0 4px 30px rgba(0,0,0,0.6)';
+                } else {
+                    navbar.style.boxShadow = 'none';
                 }
-            }, 1600);
+            });
         }
 
-        function restartGame() {
-            clearWindup();
-            playerHp = MAX_HP;
-            enemyHp = MAX_HP;
-            attackCount = 0;
-            phase = 'idle';
-            updateHpBars();
-            dodgeBtn.className = 'dodge-button';
-            dodgeBtn.textContent = '🛡️';
-            enemySprite.classList.remove('windup', 'attacking');
-            enemyName.textContent = enemyType.name;
-            enemySprite.textContent = enemyType.sprite;
-            setMessage('⚔️ Duel in the Meadow ⚔️');
-            statsDisplay.textContent = 'Attacks: 0';
-        }
-
-        // --- Event listeners ---
-        dodgeBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            handleDodge();
-        });
-        dodgeBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            handleDodge();
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' || e.key === ' ') {
-                e.preventDefault();
-                handleDodge();
-            }
-        });
-
-        restartBtn.addEventListener('click', restartGame);
-
-        optFast.addEventListener('click', () => {
-            if (phase === 'waiting' || phase === 'ready') return;
-            maxWindup = 5000;
-            optFast.classList.add('active');
-            optSlow.classList.remove('active');
-        });
-        optSlow.addEventListener('click', () => {
-            if (phase === 'waiting' || phase === 'ready') return;
-            maxWindup = 10000;
-            optSlow.classList.add('active');
-            optFast.classList.remove('active');
-        });
-
-        // Initial setup
-        restartGame();
-    })();
-</script>
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
